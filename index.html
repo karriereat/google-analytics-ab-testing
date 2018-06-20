@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Google Analytics A/B Testing</title>
     <script src="https://unpkg.com/vue"></script>
 </head>
 <body>
 
 <div id="app">
-    <select v-model="version">
-        <option value="A">A</option>
-        <option value="B">B</option>
-    </select>
-    <h1>Version {{ version }}</h1>
-    <button @click="sendConversionEvent">Buy</button>
+    <label>
+        Version
+        <select v-model="version">
+            <option value="A">A</option>
+            <option value="B">B</option>
+        </select>
+    </label>
+    <hr>
+    <h1>Version <span v-if="version === 'A'">🅰</span><span v-else>🅱</span></h1>
+    <p>This is the {{ version }} version of our landing page!</p>
+    <button @click="sendConversionEvent">Call to action</button>
 </div>
 
 <!-- Google Analytics -->
