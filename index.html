@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Analytics A/B Testing</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+
+<div id="app">
+    <select v-model="version">
+        <option value="A">A</option>
+        <option value="B">B</option>
+    </select>
+    <h1>Version {{ version }}</h1>
+    <button @click="sendConversionEvent">Buy</button>
+</div>
+
+<!-- Google Analytics -->
+<script>
+    window.ga = window.ga || function () {
+        (ga.q = ga.q || []).push(arguments)
+    };
+    ga.l = +new Date;
+    ga('create', 'UA-XXXXX-Y', 'auto');
+    ga('send', 'pageview');
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<!-- End Google Analytics -->
+
+<!-- A/B Testing Logic -->
+<script>
+    function getVersion() {
+        return localStorage.getItem('version') || (Math.random() >= 0.5 ? 'A' : 'B');
+    }
+
+    function setVersion(value) {
+        localStorage.setItem('version', value);
+    }
+
+    function sendVirtualPageview(version) {
+        ga('send', {
+            hitType: 'pageview',
+            page: `/virtual/${version}`
+        });
+        // ga('send', 'pageview',`/${this.version}`)
+    }
+
+    function sendConversionEvent() {
+        ga('send', {
+            hitType: 'event',
+            eventCategory: 'Category',
+            eventAction: 'Action',
+            eventLabel: 'Label'
+        });
+        // ga('send', 'event', 'Category', 'Action', 'Label');
+    }
+</script>
+<!-- End A/B Testing Logic -->
+
+<!-- Vue -->
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            version: getVersion()
+        },
+        methods: { sendConversionEvent },
+        watch: {
+            version(value) {
+                setVersion(value);
+            }
+        },
+        mounted() {
+            sendVirtualPageview(this.version);
+        }
+    });
+</script>
+<!-- End Vue -->
+
+</body>
+</html>
