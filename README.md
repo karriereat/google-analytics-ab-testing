@@ -2,7 +2,7 @@
 
 # Google Analytics A/B Testing
 
-Minimal A/B Testing example
+Minimal A/B testing example
 * delivering the same version to a client on each page load,
-* sending virtual pageviews
-* and conversion events.
+* sending virtual pageviews, tracking the version a client has received,
+* and sending conversion events.
